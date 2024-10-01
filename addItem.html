@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Item</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="header-container"></div>
+        <div class="logo-section">
+            <img src="image/Burger Shop Logo .png" alt="Logo">
+            <h1 style="color: rgb(221, 183, 14);">MOS Burger</h1>
+        </div>
+    </div>
+    <div class="container mt-5">
+        <h2 style="color: rgb(22, 68, 19); font-weight: bold; background-color: rgb(44, 102, 153); text-align: center;">Add New Inventory Item</h2>
+        <form id="addItemForm">
+            <div class="form-group">
+                <input type="text" class="form-control" id="itemCode" placeholder="Item Code" required>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="itemName" placeholder="Item Name" required>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="expiryDate" placeholder="Expiry Date">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="stockLevel" placeholder="Stock Level">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="unitPrice" placeholder="Unit Price" required>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="discountRate" placeholder="Discount Rate">
+            </div>
+            <div class="form-group">
+                <select class="form-control" id="category" required>
+                    <option value="">Select Category</option>
+                    <option value="Burgers">Burgers</option>
+                    <option value="Submarines">Submarines</option>
+                    <option value="Fries">Fries</option>
+                    <option value="Pasta">Pasta</option>
+                    <option value="Chicken">Chicken</option>
+                    <option value="Beverages">Beverages</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Item</button>
+            <button type="button" class="btn btn-warning btn-lg my-2" onclick="history.back();">
+                <i class="fa-solid fa-arrow-left"></i> Back
+            </button>        
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('addItemForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+    
+            const itemCode = document.getElementById('itemCode').value;
+            const itemName = document.getElementById('itemName').value;
+            const expiryDate = document.getElementById('expiryDate').value;
+            const stockLevel = document.getElementById('stockLevel').value;
+            const unitPrice = document.getElementById('unitPrice').value;
+            const discountRate = document.getElementById('discountRate').value || 'None';
+            const category = document.getElementById('category').value;
+    
+            const newItem = {
+                itemCode,
+                itemName,
+                expiryDate,
+                stockLevel,
+                unitPrice,
+                discountRate,
+           
+            };
+    
+            let inventoryItems = JSON.parse(localStorage.getItem('inventoryItems')) || [];
+    
+            
+            const isDuplicate = inventoryItems.some(item => item.itemCode === itemCode);
+    
+            if (isDuplicate) {
+                alert('Error: Duplicate Item Code. Please use a unique Item Code.');
+            } else {
+                inventoryItems.push(newItem);
+                localStorage.setItem('inventoryItems', JSON.stringify(inventoryItems));
+    
+                alert('Item added successfully!');
+                window.location.href = 'viewInventory.html'; 
+            }
+        });
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place Order</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url(image/restaurant-interior_1127-3394.avif);
+        }
+
+        .content-background {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h4 {
+            font-weight: bold;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .alert {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="mt-5 content-background p-4">
+            <h4>Customer Information</h4>
+            <div class="form-group">
+                <label for="customerSelect">Select Customer</label>
+                <select id="customerSelect" class="form-control" onchange="toggleCustomerInput()">
+                    <option value="">Select a customer</option>
+                </select>
+            </div>
+            <button type="button" class="btn btn-info btn-lg my-2" onclick="showAddCustomerModal();">
+                Add Customer
+            </button>
+
+            <h4>Available Items</h4>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Item Code</th>
+                            <th>Item Name</th>
+                            <th>Unit Price</th>
+                            <th>Quantity</th>
+                            <th>Total Price</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orderTableBody"></tbody>
+                </table>
+            </div>
+            <div class="my-3">
+                <h4>Total Amount: <span id="totalAmount">0.00</span></h4>
+            </div>
+            <button type="button" class="btn btn-success btn-lg my-2" id="placeOrderButton">
+                Place Order
+            </button>
+            <button type="button" class="btn btn-danger btn-lg my-2" onclick="clearOrder()">
+                Clear Order
+            </button>
+            <button type="button" class="btn btn-warning btn-lg my-2" onclick="window.location.href='viewOrder.html';">
+                View Orders
+            </button>
+            <div class="alert alert-success" id="successMessage"></div>
+            <div class="alert alert-danger" id="errorMessage"></div>
+        </div>
+    </div>
+
+   
+    <div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addCustomerModalLabel">Add New Customer</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="newCustomerName" class="form-control" placeholder="Enter customer name" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveCustomerButton">Save Customer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="back-btn-wrapper">
+        <button type="button" class="btn btn-warning back-btn" onclick="history.back();">
+            Back
+        </button>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+    <script>
+        const orderItems = [
+        {itemid:"P0001",name:"Classic Burger(Large)",category:"burgers",unitprice:1500,disrate:0,stock:15,expdate:"2025-07-04"},
+    {itemid:"P0002",name:"Classic Burger(Regular)",category:"burgers",unitprice:750,disrate:15,stock:15,expdate:"2025-07-04"},
+    {itemid:"P0003",name:"Turkey Burger",category:"burgers",unitprice:1600,disrate:0,stock:10,expdate:"2025-07-04"},
+    {itemid:"P0004",name:"Chicken Burger(Large)",category:"burgers",unitprice:1400,disrate:0,stock:15,expdate:"2025-07-04"},
+    {itemid:"P0005",name:"Chicken Burger(Regular)",category:"burgers",unitprice:800,disrate:20,stock:15, expdate:"2025-07-04"},
+    {itemid:"P0006",name:"Cheese Burger(Large)",category:"burgers",unitprice:1000,disrate:0,stock:10,expdate:"2025-07-04"},
+    {itemid:"P0007",name:"Cheese Burger(Regular)",category:"burgers",unitprice:600,disrate:0,stock:20,expdate:"2025-07-04"},
+    {itemid:"P0008",name:"Bacon Burger",category:"burgers",unitprice:650,disrate:15,stock:15,expdate:"2025-07-04"},
+    {itemid:"P0009",name:"Shawarma Burger",category:"burgers",unitprice:800,disrate:0,stock:15,expdate:"2025-07-04" },
+    {itemid:"P0010",name:"olive Burger",category:"burgers",unitprice:1800,disrate:0,stock:15,expdate:"2025-07-04"},
+    {itemid:"P0011",name:"Double-Cheese Burger",category:"burgers",unitprice:1250,disrate:20,stock:15,expdate:"2025-07-04"},
+    {itemid:"P0012",name:"Crispy Chicken Burger(Regular)",category:"burgers",unitprice:1200,disrate:0,stock:15,expdate:"2025-07-04"},
+    {itemid:"P0013",name:"Crispy Chicken Burger(Large)",category:"burgers",unitprice:1600,disrate:10,stock:15,expdate:"2025-07-04"},
+    {itemid:"P0014",name:"Paneer Burger",category:"burgers",unitprice:900,disrate:0,stock:15,expdate:"2025-07-04"},
+
+    {itemid:"P0015",name:"Crispy Chicken Submarine(Large)",category:"submarines",unitprice:2000,disrate:0,stock:15,expdate:"2025-07-15"},
+    {itemid:"P0016",name:"Crispy Chicken Submarine(Regular)",category:"submarines",unitprice:1500,disrate:0,stock:15,expdate:"2025-07-15"},
+    {itemid:"P0017",name:"Chicken Submarine(Large)",category:"submarines",unitprice:1800,disrate:3,stock:15,expdate:"2025-07-15"},
+    {itemid:"P0018",name:"Chicken Submarine(Regular)",category:"submarines",unitprice:1400,disrate:0,stock:15,expdate:"2025-07-15"},
+    {itemid:"P0019",name:"Grinder Submarine",category:"submarines",unitprice:2300,disrate:0,stock:15,expdate:"2025-07-15"},
+    {itemid:"P0019",name:"Cheese Submarine",category:"submarines",unitprice:2200,disrate:0,stock:15,expdate:"2025-07-15"},
+    {itemid:"P0020",name:"Double Cheese n Chicken Submarine",category:"submarines",unitprice:1900,disrate:16,stock:15,expdate:"2025-07-15"},
+    {itemid:"P0021",name:"Special Horgie Submarine",category:"submarines",unitprice:2800,disrate:0,stock:15,expdate:"2025-07-15"},
+    {itemid:"P0022",name:"BQ Special Submarine",category:"submarines",unitprice:3000,disrate:0,stock:15,expdate:"2025-07-15"},
+
+    {itemid:"P0023",name:"Steak Fries(Large)",category:"fries",unitprice:1200,disrate:0,stock:10,expdate:"2025-07-20"},
+    {itemid:"P0024",name:"Steak Fries(Medium)",category:"fries",unitprice:600,disrate:0,stock:10,expdate:"2025-07-20"},
+    {itemid:"P0025",name:"French Fries(Large)",category:"fries",unitprice:800,disrate:0,stock:10,expdate:"2025-07-20"},
+    {itemid:"P0026",name:"French Fries(Medium)",category:"fries",unitprice:650,disrate:0,stock:10,expdate:"2025-07-20"},
+    {itemid:"P0027",name:"French Fries(Small)",category:"fries",unitprice:450,disrate:0,stock:10,expdate:"2025-07-20"},
+    {itemid:"P0028",name:"Sweet Potato Fries(Large)",category:"fries",unitprice:600,disrate:0,stock:10,expdate:"2025-07-20"},
+
+    {itemid:"P0029",name:"Chicken n Cheese Pasta",category:"pasta",unitprice:1600,disrate:15,stock:5,expdate:"2025-07-02"},
+    {itemid:"P0030",name:"Chicken Penne Pasta",category:"pasta",unitprice:1700,disrate:0,stock:5,expdate:"2025-07-02"},
+    {itemid:"P0031",name:"Ground Turkey Pasta Bake",category:"pasta",unitprice:2900,disrate:10,stock:5,expdate:"2025-07-02"},
+    {itemid:"P0032",name:"Creamy Shrimp Pasta",category:"pasta",unitprice:2000,disrate:0,stock:5,expdate:"2025-07-02"},
+    {itemid:"P0033",name:"Lemon Butter Pasta",category:"pasta",unitprice:1950,disrate:0,stock:5,expdate:"2025-07-02"},
+    {itemid:"P0034",name:"Tagliatelle Pasta",category:"pasta",unitprice:2400,disrate:1,stock:5,expdate:"2025-07-02"},
+    {itemid:"P0035",name:"Baked Ravioli",category:"pasta",unitprice:2000,disrate:1,stock:5,expdate:"2025-07-02"},
+
+    {itemid:"P0036",name:"Fried Chicken(Small)",category:"chicken",unitprice:1200,disrate:0,stock:10,expdate:"2025-07-25"},
+    {itemid:"P0037",name:"Fried Chicken(Regular)",category:"chicken",unitprice:2300,disrate:10,stock:10,expdate:"2025-07-25"},
+    {itemid:"P0038",name:"Fried Chicken(Large)",category:"chicken",unitprice:3100,disrate:5,stock:10,expdate:"2025-07-25"},
+    {itemid:"P0039",name:"Hot Wings(Large)",category:"chicken",unitprice:2400,disrate:0,stock:10,expdate:"2025-07-25"},
+    {itemid:"P0040",name:"Devilled Chicken(Large)",category:"chicken",unitprice:900,disrate:0,stock:10,expdate:"2025-07-25"},
+    {itemid:"P0041",name:"BBQ Chicken(Regular)",category:"chicken",unitprice:2100,disrate:0,stock:10,expdate:"2025-07-25"},
+
+    {itemid:"P0042",name:"Pepsi(330ml)",category:"beverage",unitprice:990,disrate:5,stock:20,expdate:"2026-07-25"},
+    {itemid:"P0043",name:"Coca-Cola(330ml)",category:"beverage",unitprice:1230,disrate:0,stock:20,expdate:"2026-07-25"},
+    {itemid:"P0044",name:"Sprite(330ml)",category:"beverage",unitprice:1500,disrate:3,stock:20,expdate:"2026-07-25"},
+    {itemid:"P0045",name:"Mirinda(330ml)",category:"beverage",unitprice:850,disrate:7,stock:20,expdate:"2026-07-25"}
+           
+        ];
+
+        let totalAmount = 0;
+
+        function loadCustomers() {
+            const customers = JSON.parse(localStorage.getItem('customers')) || [];
+            const customerSelect = document.getElementById('customerSelect');
+
+            customerSelect.innerHTML = '<option value="">Select a customer</option>';
+
+            customers.forEach((customer) => {
+                const option = document.createElement('option');
+                option.value = customer.name;
+                option.textContent = customer.name;
+                customerSelect.appendChild(option);
+            });
+        }
+
+        function showAddCustomerModal() {
+            $('#addCustomerModal').modal('show');
+        }
+
+        document.getElementById("saveCustomerButton").onclick = function () {
+            const newCustomerName = document.getElementById("newCustomerName").value.trim();
+            if (!newCustomerName) {
+                alert("Customer name cannot be empty!");
+                return;
+            }
+
+            const customers = JSON.parse(localStorage.getItem('customers')) || [];
+            if (!customers.find(customer => customer.name === newCustomerName)) {
+                customers.push({ name: newCustomerName });
+                localStorage.setItem('customers', JSON.stringify(customers));
+                loadCustomers();
+                alert('Customer added successfully!');
+                $('#addCustomerModal').modal('hide');
+            } else {
+                alert('This customer already exists.');
+            }
+
+            document.getElementById("newCustomerName").value = '';
+        };
+
+        function toggleCustomerInput() {
+            const customerSelect = document.getElementById('customerSelect');
+            
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            loadCustomers();
+            const orderTableBody = document.getElementById('orderTableBody');
+
+            orderItems.forEach(item => {
+                const newRow = `
+                    <tr>
+                        <td>${item.itemid}</td>
+                        <td>${item.name}</td>
+                        <td>${item.unitprice.toFixed(2)}</td>
+                        <td><input type="number" class="form-control" min="0" max="${item.stock}" value="0" onchange="updateTotal()"></td>
+                        <td class="totalPrice">0.00</td>
+                    </tr>
+                `;
+                orderTableBody.insertAdjacentHTML('beforeend', newRow);
+            });
+        });
+
+        function updateTotal() {
+            totalAmount = 0;
+            const rows = document.querySelectorAll('#orderTableBody tr');
+
+            rows.forEach((row, index) => {
+                const unitPrice = parseFloat(row.cells[2].textContent);
+                const quantity = parseInt(row.querySelector('input').value) || 0;
+
+                const item = orderItems[index];
+                const discountAmount = (unitPrice * item.disrate) / 100;
+                const effectivePrice = unitPrice - discountAmount;
+
+                const totalPrice = effectivePrice * quantity;
+                row.querySelector('.totalPrice').textContent = totalPrice.toFixed(2);
+                totalAmount += totalPrice;
+            });
+
+            document.getElementById('totalAmount').textContent = totalAmount.toFixed(2);
+        }
+
+        document.getElementById('placeOrderButton').addEventListener('click', function () {
+            const customerName = document.getElementById('customerSelect').value;
+
+            if (totalAmount > 0) {
+                if (!customerName) {
+                    alert('Please select a customer to place an order.');
+                } else {
+                    const orderDetails = {
+                        customer: customerName,
+                        totalAmount: totalAmount.toFixed(2),
+                        items: []
+                    };
+
+                    const rows = document.querySelectorAll('#orderTableBody tr');
+                    rows.forEach((row, index) => {
+                        const quantity = parseInt(row.querySelector('input').value) || 0;
+                        if (quantity > 0) {
+                            const item = orderItems[index];
+                            orderDetails.items.push({ itemid: item.itemid, quantity: quantity });
+                        }
+                    });
+
+                    const orders = JSON.parse(localStorage.getItem('orders')) || [];
+                    orders.push(orderDetails);
+                    localStorage.setItem('orders', JSON.stringify(orders));
+
+                 
+                    generatePDF(orderDetails);
+
+                    document.getElementById('successMessage').textContent = 'Order placed successfully!';
+                    document.getElementById('successMessage').classList.remove('hidden');
+                    clearOrder();
+                }
+            } else {
+                document.getElementById('errorMessage').textContent = 'No items selected for order.';
+                document.getElementById('errorMessage').classList.remove('hidden');
+            }
+        });
+        function placeOrder() {
+    const orders = JSON.parse(localStorage.getItem('orders')) || [];
+    const orderDetails = {
+        items: ["Item 1", "Item 2"],
+    };
+    const newOrder = {
+        id: `O${orders.length + 1}`,
+        items: orderDetails.items,
+    };
+
+    orders.push(newOrder);
+    localStorage.setItem('orders', JSON.stringify(orders));
+}
+
+        function generatePDF(orderDetails) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFontSize(18);
+            doc.text('Order Receipt', 10, 10);
+
+            doc.setFontSize(12);
+            doc.text(`Customer: ${orderDetails.customer}`, 10, 20);
+            doc.text(`Total Amount: ${orderDetails.totalAmount}`, 10, 30);
+            doc.text('Items:', 10, 40);
+
+            let yOffset = 50;
+            orderDetails.items.forEach(item => {
+                doc.text(`- Item Code: ${item.itemid}, Quantity: ${item.quantity}`, 10, yOffset);
+                yOffset += 10;
+            });
+
+           
+            doc.save(`order_receipt_${Date.now()}.pdf`);
+        }
+
+        function clearOrder() {
+            const rows = document.querySelectorAll('#orderTableBody tr');
+            rows.forEach(row => {
+                row.querySelector('input').value = 0;
+                row.querySelector('.totalPrice').textContent = '0.00';
+            });
+            totalAmount = 0;
+            document.getElementById('totalAmount').textContent = totalAmount.toFixed(2);
+            document.getElementById('customerSelect').value = '';
+            document.getElementById('successMessage').classList.add('hidden');
+            document.getElementById('errorMessage').classList.add('hidden');
+        }
+    </script>
+</body>
+
+</html>

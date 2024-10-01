@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="form-container">
+                    <h2>Customer Management</h2>
+                    <form id="customerForm" onsubmit="addCustomer(); return false;">
+                        <div class="mb-3">
+                            <label for="customername" class="form-label">Customer Name</label>
+                            <input type="text" class="form-control" id="customername" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="customerphone" class="form-label">Customer Telephone</label>
+                            <input type="tel" class="form-control" id="customerphone" required>
+                            <small class="form-text text-muted">Please enter a 10-digit phone number.</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="customeremail" class="form-label">Customer Email</label>
+                            <input type="email" class="form-control" id="customeremail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="customeraddress" class="form-label">Customer Address</label>
+                            <textarea class="form-control" id="customeraddress" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Customer</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Customer List Column -->
+            <div class="col-md-7">
+                <div class="container mt-4">
+                    <h3 style="background-color: aqua;">Customer List</h3>
+                    <input type="text" id="searchInput" placeholder="Search by ID or Phone" class="form-control" oninput="searchCustomer(this.value);">
+                    <div class="mt-4">
+                        <table class="table table-striped table-hover customer-table">
+                            <thead>
+                                <tr>
+                                    <th>Customer ID</th>
+                                    <th>Name</th>
+                                    <th>Phone</th>
+                                    <th>Email</th>
+                                    <th>Address</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="customerTableBody"></tbody>
+                        </table>
+                    </div>
+                    <a href="placeOrder.html" class="btn btn-success mt-3">Place Order</a>
+                    <a href="viewOrder.html" class="btn btn-info mt-3">View Orders</a>
+                    <div class="back-btn-wrapper">
+                        <button type="button" class="btn btn-warning back-btn" onclick="history.back();">
+                            Back
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let customerIdCounter = parseInt(localStorage.getItem('customerIdCounter')) || 1; 
+        let customers = JSON.parse(localStorage.getItem('customers')) || [];
+
+        function getNextCustomerId() {
+            return 'C' + String(customerIdCounter++).padStart(3, '0');
+        }
+
+        function addCustomer() {
+            const customerName = document.getElementById("customername").value;
+            const customerPhone = document.getElementById("customerphone").value;
+            const customerEmail = document.getElementById("customeremail").value;
+            const customerAddress = document.getElementById("customeraddress").value;
+
+            const customer = {
+                id: getNextCustomerId(), 
+                name: customerName,
+                phone: customerPhone,
+                email: customerEmail,
+                address: customerAddress
+            };
+
+            customers.push(customer);
+            localStorage.setItem('customers', JSON.stringify(customers));
+            localStorage.setItem('customerIdCounter', customerIdCounter); 
+
+            updateCustomerTable();
+            document.getElementById("customerForm").reset();
+        }
+
+        function updateCustomerTable() {
+            const tableBody = document.getElementById("customerTableBody");
+            tableBody.innerHTML = "";
+
+            customers.forEach((customer) => {
+                const row = document.createElement("tr");
+
+                row.innerHTML = `
+                    <td>${customer.id}</td>
+                    <td>${customer.name}</td>
+                    <td>${customer.phone}</td>
+                    <td>${customer.email}</td>
+                    <td>${customer.address}</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning" onclick="editCustomer('${customer.id}')">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteCustomer('${customer.id}')">Delete</button>
+                    </td>
+                `;
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        function deleteCustomer(customerId) {
+            const index = customers.findIndex(customer => customer.id === customerId);
+            if (index !== -1) {
+                customers.splice(index, 1);
+                localStorage.setItem('customers', JSON.stringify(customers));
+                updateCustomerTable();
+            }
+        }
+
+        function editCustomer(customerId) {
+            const customer = customers.find(c => c.id === customerId);
+            if (customer) {
+                document.getElementById("customername").value = customer.name;
+                document.getElementById("customerphone").value = customer.phone;
+                document.getElementById("customeremail").value = customer.email;
+                document.getElementById("customeraddress").value = customer.address;
+
+                deleteCustomer(customerId); 
+            }
+        }
+
+        function searchCustomer(query) {
+            const tableBody = document.getElementById("customerTableBody");
+            tableBody.innerHTML = "";
+
+            const filteredCustomers = customers.filter(customer => 
+                customer.id.toString().includes(query) || customer.phone.includes(query)
+            );
+
+            filteredCustomers.forEach((customer) => {
+                const row = document.createElement("tr");
+
+                row.innerHTML = `
+                    <td>${customer.id}</td>
+                    <td>${customer.name}</td>
+                    <td>${customer.phone}</td>
+                    <td>${customer.email}</td>
+                    <td>${customer.address}</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning" onclick="editCustomer('${customer.id}')">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteCustomer('${customer.id}')">Delete</button>
+                    </td>
+                `;
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", updateCustomerTable);
+    </script>
+</body>
+
+</html>

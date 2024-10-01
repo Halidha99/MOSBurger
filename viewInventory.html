@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Table</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+       /* body{
+       background-image: url(image/restaurant-interior_1127-3394.avif);
+       } */
+        .content-background {
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .table {
+            width: 100%;
+            max-width: 1200px;
+            margin: auto;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background-color: #343a40;
+            color: white;
+        }
+
+        th, td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .table-danger {
+            background-color: #ffe5e5;
+        }
+
+        .table-secondary {
+            background-color: #e9ecef;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+            transition: background-color 0.3s;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row d-flex justify-content-center align-items-center body-sub-background">
+            <div class="col-11 my-3 p-4 rounded-3 content-background">
+                <div class="container">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Item Code</th>
+                                    <th>Item Name</th>
+                                    <th>Expiry Date</th>
+                                    <th>Stock Level</th>
+                                    <th>Unit Price</th>
+                                    <th>Discount Rate</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventoryTableBody">
+                             <thead class="table-secondary">
+                                <tr>
+                                    <th colspan="6">Burgers</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-danger" id="burgersbody">
+                                <tr>
+                                    <td>B1001</td>
+                                    <td>Classic Burger (Large)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>750.00</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>B1002</td>
+                                    <td>Classic Burger (Regular)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>1500.00</td>
+                                    <td>15%</td>
+                                </tr>
+                                <tr>
+                                    <td>B1003</td>
+                                    <td>Turkey Burger</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>1600.00</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>B1004</td>
+                                    <td>Chicken Burger (Large)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>1400.00</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>B1005</td>
+                                    <td>Chicken Burger (Regular)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>800.00</td>
+                                    <td>20%</td>
+                                </tr>
+                                <tr>
+                                    <td>B1006</td>
+                                    <td>Cheese Burger (Large)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>1000.00</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>B1007</td>
+                                    <td>Cheese Burger (Regular)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>600.00</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>B1008</td>
+                                    <td>Bacon Burger</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>650.00</td>
+                                    <td>15%</td>
+                                </tr>
+                                <tr>
+                                    <td>B1009</td>
+                                    <td>Shawarma Burger</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>800.00</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>B1010</td>
+                                    <td>Olive Burger</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>1800.00</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>B1012</td>
+                                    <td>Double-Cheese Burger</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>1250.00</td>
+                                    <td>20%</td>
+                                </tr>
+                                <tr>
+                                    <td>B1013</td>
+                                    <td>Crispy Chicken Burger (Regular)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>1200.00</td>
+                                    <td>-</td>
+                                </tr>
+                            </tbody>
+                            <thead class="table-secondary">
+                                <tr>
+                                    <th colspan="6">Submarines</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-danger" id="submarinesbody">
+                                <tr>
+                                    <td>B1016</td>
+                                    <td>Crispy Chicken Submarine (Large)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>2000.00</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>B1017</td>
+                                    <td>Crispy Chicken Submarine (Regular)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>1500.00</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>B1018</td>
+                                    <td>Chicken Submarine (Large)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>1800.00</td>
+                                    <td>3%</td>
+                                </tr>
+                                <tr>
+                                    <td>B1019</td>
+                                    <td>Chicken Submarine (Regular)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>1400.00</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>B1020</td>
+                                    <td>Grinder Submarine</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>2300.00</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>B1021</td>
+                                    <td>Cheese Submarine</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>2200.00</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>B1022</td>
+                                    <td>Double Cheese n Chicken Submarine</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>1900.00</td>
+                                    <td>16%</td>
+                                </tr>
+                                <tr>
+                                    <td>B1023</td>
+                                    <td>Special Horgie Submarine</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>2800.00</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>B1024</td>
+                                    <td>MOS Special Submarine</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>3000.00</td>
+                                    <td>-</td>
+                                </tr>
+                            </tbody>
+                            <thead class="table-secondary">
+                                <tr>
+                                    <th colspan="6">Fries</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-danger" id="friesbody">
+                                <tr>
+                                    <td>B1025</td>
+                                    <td>Steak Fries (Large)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>1200.00</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>B1026</td>
+                                    <td>Steak Fries (Medium)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>600.00</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>B1027</td>
+                                    <td>French Fries (Large)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>800.00</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>B1028</td>
+                                    <td>French Fries (Medium)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>650.00</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>B1029</td>
+                                    <td>French Fries (Small)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>450.00</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>B1030</td>
+                                    <td>Sweet Potato Fries (Large)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>600.00</td>
+                                    <td>-</td>
+                                </tr>
+                            </tbody>
+                            <thead class="table-secondary">
+                                <tr>
+                                    <th colspan="6">Pasta</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-danger" id="pastabody">
+                                <tr>
+                                    <td>B1031</td>
+                                    <td>Chicken n Cheese Pasta</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>1600.00</td>
+                                    <td>15%</td>
+                                </tr>
+                                <tr>
+                                    <td>B1032</td>
+                                    <td>Chicken Penne Pasta</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>1700.00</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>B1033</td>
+                                    <td>Ground Turkey Pasta Bake</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>2900.00</td>
+                                    <td>10%</td>
+                                </tr>
+                                <tr>
+                                    <td>B1034</td>
+                                    <td>Creamy Shrimp Pasta</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>2000.00</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>B1035</td>
+                                    <td>Lemon Butter Pasta</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>1950.00</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>B1036</td>
+                                    <td>Tagliatelle Pasta</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>2400.00</td>
+                                    <td>1%</td>
+                                </tr>
+                                <tr>
+                                    <td>B1037</td>
+                                    <td>Baked Ravioli</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>2000.00</td>
+                                    <td>1%</td>
+                                </tr>
+                            </tbody>
+                            <thead class="table-secondary">
+                                <tr>
+                                    <th colspan="6">Chicken</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-danger" id="chickenbody">
+                                <tr>
+                                    <td>B1038</td>
+                                    <td>Fried Chicken (Small)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>1200.00</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>B1039</td>
+                                    <td>Fried Chicken (Regular)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>2300.00</td>
+                                    <td>10%</td>
+                                </tr>
+                                <tr>
+                                    <td>B1040</td>
+                                    <td>Fried Chicken (Large)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>3100.00</td>
+                                    <td>5%</td>
+                                </tr>
+                                <tr>
+                                    <td>B1041</td>
+                                    <td>Hot Wings (Large)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>2400.00</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>B1042</td>
+                                    <td>Devilled Chicken (Large)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>900.00</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>B1043</td>
+                                    <td>BBQ Chicken (Regular)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>2100.00</td>
+                                    <td>-</td>
+                                </tr>
+                            </tbody>
+                            <thead class="table-secondary">
+                                <tr>
+                                    <th colspan="6">Beverages</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-danger" id="beveragesbody">
+                                <tr>
+                                    <td>B1044</td>
+                                    <td>Pepsi (330ml)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>990.00</td>
+                                    <td>5%</td>
+                                </tr>
+                                <tr>
+                                    <td>B1045</td>
+                                    <td>Coca-Cola (330ml)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>1230.00</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>B1046</td>
+                                    <td>Sprite (330ml)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>1500.00</td>
+                                    <td>3%</td>
+                                </tr>
+                                <tr>
+                                    <td>B1047</td>
+                                    <td>Mirinda (330ml)</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>850.00</td>
+                                    <td>7%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const inventoryItems = JSON.parse(localStorage.getItem('inventoryItems')) || [];
+            const inventoryTableBody = document.getElementById('inventoryTableBody');
+
+            
+            inventoryItems.forEach(item => {
+                const newRow = `
+                    <tr>
+                        <td>${item.itemCode}</td>
+                        <td>${item.itemName}</td>
+                        <td>${item.expiryDate}</td>
+                        <td>${item.stockLevel}</td>
+                        <td>${item.unitPrice}</td>
+                        <td>${item.discountRate}</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm btn-edit" onclick="editItem('${item.itemCode}')">Edit</button>
+                            <button class="btn btn-danger btn-sm btn-delete" onclick="deleteItem('${item.itemCode}')">Delete</button>
+                        </td>
+                    </tr>
+                `;
+                inventoryTableBody.insertAdjacentHTML('beforeend', newRow);
+            });
+        });
+
+        
+        function editItem(itemCode) {
+            const inventoryItems = JSON.parse(localStorage.getItem('inventoryItems')) || [];
+            const itemToEdit = inventoryItems.find(item => item.itemCode === itemCode);
+
+            if (itemToEdit) {
+                document.getElementById('itemCode').value = itemToEdit.itemCode;
+                document.getElementById('itemName').value = itemToEdit.itemName;
+                document.getElementById('expiryDate').value = itemToEdit.expiryDate;
+                document.getElementById('stockLevel').value = itemToEdit.stockLevel;
+                document.getElementById('unitPrice').value = itemToEdit.unitPrice;
+                document.getElementById('discountRate').value = itemToEdit.discountRate;
+
+                const editItemModal = new bootstrap.Modal(document.getElementById('editItemModal'));
+                editItemModal.show();
+            }
+        }
+
+       
+        document.getElementById('updateButton').addEventListener('click', function () {
+            const updatedItem = {
+                itemCode: document.getElementById('itemCode').value,
+                itemName: document.getElementById('itemName').value,
+                expiryDate: document.getElementById('expiryDate').value,
+                stockLevel: document.getElementById('stockLevel').value,
+                unitPrice: document.getElementById('unitPrice').value,
+                discountRate: document.getElementById('discountRate').value,
+            };
+
+            const inventoryItems = JSON.parse(localStorage.getItem('inventoryItems')) || [];
+            const itemIndex = inventoryItems.findIndex(item => item.itemCode === updatedItem.itemCode);
+            if (itemIndex !== -1) {
+                inventoryItems[itemIndex] = updatedItem; 
+                localStorage.setItem('inventoryItems', JSON.stringify(inventoryItems)); 
+                location.reload(); 
+            }
+        });
+
+       
+        function deleteItem(itemCode) {
+            const inventoryItems = JSON.parse(localStorage.getItem('inventoryItems')) || [];
+            const updatedItems = inventoryItems.filter(item => item.itemCode !== itemCode); 
+
+            localStorage.setItem('inventoryItems', JSON.stringify(updatedItems)); 
+            location.reload();
+        }
+    
+    </script>
+
+    <button type="button" class="btn btn-danger btn-lg my-2" onclick="location.href='addItem.html';">
+        <i class="fa-solid fa-plus"></i> Add Item
+    </button>
+    <button type="button" class="btn btn-warning btn-lg my-2" onclick="history.back();">
+        <i class="fa-solid fa-arrow-left"></i> Back
+    </button>
+
+</body>
+</html>
+
+</body>
+</html>
