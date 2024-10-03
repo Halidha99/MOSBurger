@@ -11,13 +11,14 @@
 
 <body>
     <div class="header-container"></div>
-        <div class="logo-section">
-            <img src="image/Burger Shop Logo .png" alt="Logo">
-            <h1 style="color: rgb(221, 183, 14);">MOS Burger</h1>
-        </div>
+    <div class="logo-section">
+        <img src="image/Burger Shop Logo .png" alt="Logo">
+        <h1 style="color: rgb(221, 183, 14);">MOS Burger</h1>
     </div>
+    
     <div class="container mt-5">
-        <h2 style="color: rgb(22, 68, 19); font-weight: bold; background-color: rgb(44, 102, 153); text-align: center;">Add New Inventory Item</h2>
+        <h2 style="color: rgb(22, 68, 19); font-weight: bold; background-color: rgb(44, 102, 153); text-align: center;">
+            Add New Inventory Item</h2>
         <form id="addItemForm">
             <div class="form-group">
                 <input type="text" class="form-control" id="itemCode" placeholder="Item Code" required>
@@ -26,16 +27,16 @@
                 <input type="text" class="form-control" id="itemName" placeholder="Item Name" required>
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" id="expiryDate" placeholder="Expiry Date">
+                <input type="date" class="form-control" id="expiryDate" placeholder="Expiry Date">
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" id="stockLevel" placeholder="Stock Level">
+                <input type="number" class="form-control" id="stockLevel" placeholder="Stock Level" required min="0">
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" id="unitPrice" placeholder="Unit Price" required>
+                <input type="number" class="form-control" id="unitPrice" placeholder="Unit Price" required min="0" step="0.01">
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" id="discountRate" placeholder="Discount Rate">
+                <input type="number" class="form-control" id="discountRate" placeholder="Discount Rate" min="0" max="100" step="0.01">
             </div>
             <div class="form-group">
                 <select class="form-control" id="category" required>
@@ -51,14 +52,14 @@
             <button type="submit" class="btn btn-primary">Add Item</button>
             <button type="button" class="btn btn-warning btn-lg my-2" onclick="history.back();">
                 <i class="fa-solid fa-arrow-left"></i> Back
-            </button>        
+            </button>
         </form>
     </div>
 
     <script>
         document.getElementById('addItemForm').addEventListener('submit', function (e) {
             e.preventDefault();
-    
+
             const itemCode = document.getElementById('itemCode').value;
             const itemName = document.getElementById('itemName').value;
             const expiryDate = document.getElementById('expiryDate').value;
@@ -66,7 +67,7 @@
             const unitPrice = document.getElementById('unitPrice').value;
             const discountRate = document.getElementById('discountRate').value || 'None';
             const category = document.getElementById('category').value;
-    
+
             const newItem = {
                 itemCode,
                 itemName,
@@ -74,25 +75,24 @@
                 stockLevel,
                 unitPrice,
                 discountRate,
-           
+                category 
             };
-    
+
             let inventoryItems = JSON.parse(localStorage.getItem('inventoryItems')) || [];
-    
+
             
             const isDuplicate = inventoryItems.some(item => item.itemCode === itemCode);
-    
+
             if (isDuplicate) {
                 alert('Error: Duplicate Item Code. Please use a unique Item Code.');
             } else {
                 inventoryItems.push(newItem);
                 localStorage.setItem('inventoryItems', JSON.stringify(inventoryItems));
-    
+
                 alert('Item added successfully!');
                 window.location.href = 'viewInventory.html'; 
             }
         });
     </script>
-    
 </body>
 </html>
